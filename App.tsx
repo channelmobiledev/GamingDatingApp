@@ -1,117 +1,129 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * Generated with the TypeScript template
- * https://github.com/react-native-community/react-native-template-typescript
- *
- * @format
- */
-
+import 'react-native-gesture-handler';
 import React from 'react';
-import {
-  SafeAreaView,
-  StyleSheet,
-  ScrollView,
-  View,
-  Text,
-  StatusBar,
-} from 'react-native';
+import {SafeAreaView, StyleSheet, StatusBar, Text, View} from 'react-native';
+import {createMaterialBottomTabNavigator} from '@react-navigation/material-bottom-tabs';
+import {DefaultTheme, NavigationContainer} from '@react-navigation/native';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import ProfileContainer from './src/components/profile/profile.container';
+import MessagesContainer from './src/components/messages/messages.contaner';
+import MatchesContainer from './src/components/matches/matches.container';
 
-import {
-  Header,
-  LearnMoreLinks,
-  Colors,
-  DebugInstructions,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
+const Tab = createMaterialBottomTabNavigator();
 
-declare const global: {HermesInternal: null | {}};
+const AppDefaultTheme = {
+  ...DefaultTheme,
+  dark: true,
+  colors: {
+    ...DefaultTheme.colors,
+    primary: '#ff073a',
+    background: '#2cf4da',
+    card: '#303030',
+    text: '#ff0000',
+    notification: '#2cf4da',
+    backgroundColor: '#ff0000',
+    placeholder: '#ff0000',
+    underlineColor: '#ff0000',
+  },
+};
 
+/**
+ * Main App
+ */
 const App = () => {
+  /**
+   * Main navigation bar at the bottom
+   */
+  const MainNavigationTabViews = () => {
+    /**
+     * Render Feed view
+     */
+    const TabMatches = () => {
+      return <MatchesContainer />;
+    };
+
+    /**
+     * Render Messages view
+     */
+    const TabMessages = () => {
+      return <MessagesContainer />;
+    };
+
+    /**
+     * Render Profile view
+     */
+    const TabProfile = () => {
+      return <ProfileContainer />;
+    };
+
+    /**
+     * Navigation Tab Bar view
+     */
+    return (
+      <Tab.Navigator labeled={true} activeColor={'#2cf4da'}>
+        <Tab.Screen
+          name="Matches"
+          component={TabMatches}
+          options={{
+            tabBarIcon: ({color}) => (
+              <MaterialCommunityIcons
+                name="heart-outline"
+                color={color}
+                size={26}
+              />
+            ),
+          }}
+        />
+        <Tab.Screen
+          name="Messages"
+          component={TabMessages}
+          options={{
+            tabBarIcon: ({color}) => (
+              <MaterialCommunityIcons
+                name="message-reply-text"
+                color={color}
+                size={26}
+              />
+            ),
+          }}
+        />
+        <Tab.Screen
+          name="Profile"
+          component={TabProfile}
+          options={{
+            tabBarIcon: ({color}) => (
+              <MaterialCommunityIcons
+                name="human-greeting"
+                color={color}
+                size={26}
+              />
+            ),
+          }}
+        />
+      </Tab.Navigator>
+    );
+  };
+
+  /**
+   * Render
+   */
   return (
     <>
       <StatusBar barStyle="dark-content" />
-      <SafeAreaView>
-        <ScrollView
-          contentInsetAdjustmentBehavior="automatic"
-          style={styles.scrollView}>
-          <Header />
-          {global.HermesInternal == null ? null : (
-            <View style={styles.engine}>
-              <Text style={styles.footer}>Engine: Hermes</Text>
-            </View>
-          )}
-          <View style={styles.body}>
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>Step One</Text>
-              <Text style={styles.sectionDescription}>
-                Edit <Text style={styles.highlight}>App.tsx</Text> to change this
-                screen and then come back to see your edits.
-              </Text>
-            </View>
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>See Your Changes</Text>
-              <Text style={styles.sectionDescription}>
-                <ReloadInstructions />
-              </Text>
-            </View>
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>Debug</Text>
-              <Text style={styles.sectionDescription}>
-                <DebugInstructions />
-              </Text>
-            </View>
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>Learn More</Text>
-              <Text style={styles.sectionDescription}>
-                Read the docs to discover what to do next:
-              </Text>
-            </View>
-            <LearnMoreLinks />
-          </View>
-        </ScrollView>
+      <SafeAreaView style={styles.container}>
+        <NavigationContainer theme={AppDefaultTheme}>
+          <MainNavigationTabViews />
+        </NavigationContainer>
       </SafeAreaView>
     </>
   );
 };
 
+/**
+ * Styles
+ */
 const styles = StyleSheet.create({
-  scrollView: {
-    backgroundColor: Colors.lighter,
-  },
-  engine: {
-    position: 'absolute',
-    right: 0,
-  },
-  body: {
-    backgroundColor: Colors.white,
-  },
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
-  },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
-    color: Colors.black,
-  },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-    color: Colors.dark,
-  },
-  highlight: {
-    fontWeight: '700',
-  },
-  footer: {
-    color: Colors.dark,
-    fontSize: 12,
-    fontWeight: '600',
-    padding: 4,
-    paddingRight: 12,
-    textAlign: 'right',
+  container: {
+    flex: 1,
   },
 });
 
